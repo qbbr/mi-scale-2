@@ -1,10 +1,12 @@
 # mi-scale-2
 
-Get Xiaomi Mi Smart Scale 2 weight \w unit
+Get Xiaomi Mi Smart Scale 2 weight
 
 ## Requirements
 
- * python3 + bluepy
+ * python3
+ * bluepy
+ * root permission for `bluepy.btle`
 
 ```bash
 sudo pip install -r requirements.txt
@@ -14,8 +16,11 @@ sudo pip install -r requirements.txt
 
 run \w sudo || from #root:
 
-```
-sudo ./get_weight.py --mac 00:00:00:00:00:00
+```bash
+sudo ./get_weight.py 00:00:00:00:00:00
+# ./get_weight.py 00:00:00:00:00:00 --with-units
+# ./get_weight.py 00:00:00:00:00:00 --verbose
+# ./get_weight.py --help
 ```
 
 ## Help
