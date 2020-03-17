@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
 
 # run \w sudo or from #root
-# @see: https://github.com/oliexdev/openScale/wiki/Xiaomi-Bluetooth-Mi-Scale
-# sudo pip3 install bluepy
-# if trouble, plz restart bluetooth:
-# sudo hciconfig hci0 reset
-# sudo invoke-rc.d bluetooth restart
-# sudo hcitool lescan
 # tested only on raspberry pi 3b and mi scale 2
 # \w <3 qbbr
 
