@@ -42,6 +42,8 @@ class ScanDelegate(DefaultDelegate):
                     weight = int.from_bytes(raw_data[1:3], byteorder='little') / 100
 
                     if not self.with_units:
+                        if (raw_data[0] & (1<<1)) != 0: # kg
+                            weight /= 2 # catty to kg
                         print(weight) # outout: 74.7
                     else:
                         if (raw_data[0] & (1<<4)) != 0: # chinese catty
