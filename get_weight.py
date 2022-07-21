@@ -33,7 +33,7 @@ class ScanDelegate(DefaultDelegate):
                 if raw_data == self.last_raw_data:
                     if self.is_verbose:
                         print("skip duplicate data")
-                    return;
+                    return
 
                 is_stabilized = (raw_data[0] & (1 << 5)) != 0
                 is_weight_removed = (raw_data[0] & (1 << 7)) != 0
@@ -45,7 +45,7 @@ class ScanDelegate(DefaultDelegate):
                     if not self.with_units:
                         if (raw_data[0] & (1 << 1)) != 0:  # kg
                             weight /= 2  # catty to kg
-                        print(weight)  # outout: 74.7
+                        print(weight)  # output: 74.7
                     else:
                         if (raw_data[0] & (1 << 4)) != 0:  # chinese catty
                             unit = "jin"
@@ -57,7 +57,7 @@ class ScanDelegate(DefaultDelegate):
                         else:
                             unit = "unknown"
 
-                        print(weight, unit)  # outout: 74.7 kg
+                        print(weight, unit)  # output: 74.7 kg
 
 
 def main():
