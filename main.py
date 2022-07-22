@@ -9,6 +9,7 @@ with <3 by @qbbr
 
 import argparse
 import logging
+import os
 
 from dotenv import dotenv_values
 
@@ -18,7 +19,7 @@ from scanner import start
 
 
 def main():
-    config = dotenv_values(".env")
+    config = dotenv_values(os.path.dirname(__file__) + "/.env")
     parser = argparse.ArgumentParser(description="Get Xiaomi Mi Smart Scale 2 weight and publishing to mqtt.",
                                      epilog="with <3 by @qbbr")
     parser.add_argument("--loglevel", dest="logLevel", choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
