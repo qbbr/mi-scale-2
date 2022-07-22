@@ -1,11 +1,15 @@
 # mi-scale-2
 
-Get Xiaomi Mi Smart Scale 2 weight
+Get Xiaomi Mi Smart Scale 2 weight and publishing to mqtt
+
+*Tested only on Raspberry Pi 3b + Mi Scale 2*
 
 ## Requirements
 
  * python3
+ * python-dotenv
  * bluepy
+ * paho-mqtt
  * root permission for `bluepy.btle`
 
 ```bash
@@ -14,13 +18,42 @@ sudo pip install -r requirements.txt
 
 ## Usage
 
-run \w sudo || from #root:
+always run with `sudo` or from `root`:
 
 ```bash
-sudo ./get_weight.py 00:00:00:00:00:00
-# ./get_weight.py 00:00:00:00:00:00 --with-units
-# ./get_weight.py 00:00:00:00:00:00 --verbose
-# ./get_weight.py --help
+cp .env.dist .env
+vim .env
+sudo ./main.py
+# sudo ./main.py --help
+# sudo ./main.py --loglevel=DEBUG
+```
+
+## Autostart
+
+```bash
+sudo cp mi-scale-2.service /etc/systemd/system/
+sudo systemctl enable mi-scale-2
+sudo systemctl start mi-scale-2
+```
+
+## Integrate with Home Assistant
+
+[![qbbr-mi-scale-2-home-assistant-integration](https://i.imgur.com/rRetkYZ.png)](https://i.imgur.com/rRetkYZ.png)
+
+```yaml
+# configuration.yaml:
+mqtt:
+    sensor:
+      - name: "my_weight"
+        state_topic: "miscale/qbbr/weight"
+        force_update: true
+        unit_of_measurement: "kg"
+        state_class: "measurement"
+        icon: mdi:scale
+
+# customize.yaml:
+sensor.my_weight:
+    friendly_name: Мой вес
 ```
 
 ## Help
@@ -31,7 +64,7 @@ get dev mac address:
 sudo hcitool lescan
 ```
 
-if u hv troubleshoots \w dev - restart u bluetooth/adapter
+if u have troubleshoots, try restart u bluetooth/adapter
 
 ```bash
 sudo hciconfig hci0 reset
