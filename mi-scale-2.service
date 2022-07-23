@@ -8,7 +8,7 @@ Type = simple
 Restart = always
 RestartSec = 5
 User = root
-ExecStart = sudo /home/pi/git/mi-scale-2/main.py
+ExecStart = /home/pi/git/mi-scale-2/main.py
 
 [Install]
 WantedBy = multi-user.target
