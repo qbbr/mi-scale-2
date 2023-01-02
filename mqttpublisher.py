@@ -6,8 +6,12 @@ from logger import log
 class MqttPublisher:
     MQTT_CLIENT_ID = "python-qbbr-mi-scale-2"
 
-    def __init__(self, config):
-        self.config = config
+    def __init__(self, host, port, user, passwd, topic):
+        self.host = host
+        self.port = int(port)
+        self.user = user
+        self.passwd = passwd
+        self.topic = topic
         self.client = None
 
     def connect(self):
@@ -18,9 +22,9 @@ class MqttPublisher:
                 log.error("failed to connect, return code %d", rc)
 
         client = mqtt_client.Client(self.MQTT_CLIENT_ID, clean_session=False, userdata=None)
-        client.username_pw_set(self.config.get("MQTT_USER"), self.config.get("MQTT_PASS"))
+        client.username_pw_set(self.user, self.passwd)
         client.on_connect = on_connect
-        client.connect(self.config.get("MQTT_HOST"), int(self.config.get("MQTT_PORT")))
+        client.connect(self.host, self.port)
 
         return client
 
@@ -28,7 +32,7 @@ class MqttPublisher:
         if self.client is None:
             self.client = self.connect()
             self.client.loop_start()
-        topic = self.config.get("MQTT_TOPIC")
+        topic = self.topic
         result = self.client.publish(topic, msg)
         status = result[0]  # result: [0, 1]
         if 0 == status:

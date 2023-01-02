@@ -15,7 +15,7 @@ from dotenv import dotenv_values
 
 from logger import log, basicConfig
 from mqttpublisher import MqttPublisher
-from scanner import start
+import scanner
 
 
 def main():
@@ -35,10 +35,18 @@ def main():
             log.warning("weight is not between %s and %s, skip publishing", config.get("MIN_WEIGHT"),
                         config.get("MAX_WEIGHT"))
             return
-        publisher = MqttPublisher(config)
+        publisher = MqttPublisher(config.get("MQTT_HOST"), config.get("MQTT_PORT"), config.get("MQTT_USER"),
+                                  config.get("MQTT_PASS"), config.get("MQTT_TOPIC"))
         publisher.publish(weight)
 
-    start(config.get("MAC_ADDRESS"), float(config.get("TIMEOUT")), callback)
+    def callback_presence(presence):
+        log.info("presence = %s", presence)
+        publisher = MqttPublisher(config.get("MQTT_HOST"), config.get("MQTT_PORT"), config.get("MQTT_USER"),
+                                  config.get("MQTT_PASS"), config.get("MQTT_TOPIC_PRESENCE"))
+        publisher.publish('home' if presence else 'not_home')
+
+    scanner.start(config.get("MAC_ADDRESS"), config.get("MAC_ADDRESS_PRESENCE"), float(config.get("TIMEOUT")), callback,
+                  callback_presence)
 
 
 if __name__ == "__main__":

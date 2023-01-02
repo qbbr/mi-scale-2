@@ -2,19 +2,25 @@ from bluepy.btle import Scanner, DefaultDelegate
 
 from logger import log
 
+presence = False
+
 
 class ScanDelegate(DefaultDelegate):
     # 1 - flags, 2 - Incomplete 16b Services, 255 - Manufacturer, 22 - 16b Service Data, 9 - Complete Local Name
     SERVICE_DATA = 22  # [1d18828809e4070310112302]
 
-    def __init__(self, mac_address, callback):
+    def __init__(self, mac_address, mac_address_presence, callback):
         DefaultDelegate.__init__(self)
         self.mac_address = mac_address.upper()
+        self.mac_address_presence = mac_address_presence.upper()
         self.last_raw_data = None
         self.callback = callback
 
     def handleDiscovery(self, dev, isNewDev, isNewData):
-        if self.mac_address == dev.addr.upper():
+        if self.mac_address_presence == dev.addr.upper():
+            global presence
+            presence = True
+        elif self.mac_address == dev.addr.upper():
             self.parse_data(dev)
 
     def parse_data(self, dev):
@@ -48,11 +54,14 @@ class ScanDelegate(DefaultDelegate):
                     self.callback(weight, unit)
 
 
-def start(mac_address, timeout, callback):
+def start(mac_address, mac_address_presence, timeout, callback, callback_presence):
     log.info("scanner is starting...")
-    scanner = Scanner().withDelegate(ScanDelegate(mac_address, callback))
+    scanner = Scanner().withDelegate(ScanDelegate(mac_address, mac_address_presence, callback))
 
     while True:
+        global presence
+        presence = False
         scanner.start()
         scanner.process(timeout)
         scanner.stop()
+        callback_presence(presence)
