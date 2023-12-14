@@ -1,7 +1,5 @@
 # mi-scale-2
 
-[![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://github.com/vshymanskyy/StandWithUkraine/blob/main/docs/README.md)
-
 Get Xiaomi Mi Smart Scale 2 weight and publishing to mqtt
 
 *Tested only on Raspberry Pi 3b + Mi Scale 2*
